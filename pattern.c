@@ -154,6 +154,10 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
   HEADER *h = ctx->hdrs[msgno];
   char *buf;
   size_t blen;
+#ifdef HAVE_FMEMOPEN
+  char *temp;
+  size_t tempsize;
+#endif
 
   if ((msg = mx_open_message (ctx, msgno)) != NULL)
   {
@@ -163,12 +167,20 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
       memset (&s, 0, sizeof (s));
       s.fpin = msg->fp;
       s.flags = M_CHARCONV;
+#ifdef HAVE_FMEMOPEN
+      if((s.fpout = open_memstream(&temp, &tempsize)) == NULL)
+      {
+	mutt_perror ("Error opening memstream");
+	return (0);
+      }
+#else
       mutt_mktemp (tempfile, sizeof (tempfile));
       if ((s.fpout = safe_fopen (tempfile, "w+")) == NULL)
       {
 	mutt_perror (tempfile);
 	return (0);
       }
+#endif
 
       if (pat->op != M_BODY)
 	mutt_copy_header (msg->fp, h, s.fpout, CH_FROM | CH_DECODE, NULL);
@@ -184,7 +196,11 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
 	  if (s.fpout)
 	  {
 	    safe_fclose (&s.fpout);
+#ifdef HAVE_FMEMOPEN
+            FREE(&temp);
+#else
 	    unlink (tempfile);
+#endif
 	  }
 	  return (0);
 	}
@@ -193,11 +209,28 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
 	mutt_body_handler (h->content, &s);
       }
 
+#ifdef HAVE_FMEMOPEN
+      fclose(s.fpout);
+      lng = tempsize;
+
+      if(tempsize) {
+          if ((fp = fmemopen(temp, tempsize, "r")) == NULL) {
+            mutt_perror ("Error re-opening memstream");
+            return (0);
+          }
+      } else { /* fmemopen cannot handle empty buffers */
+          if ((fp = safe_fopen ("/dev/null", "r")) == NULL) {
+            mutt_perror ("Error opening /dev/null");
+            return (0);
+          }
+      }
+#else
       fp = s.fpout;
       fflush (fp);
       fseek (fp, 0, 0);
       fstat (fileno (fp), &st);
       lng = (long) st.st_size;
+#endif
     }
     else
     {
@@ -244,7 +277,12 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
     if (option (OPTTHOROUGHSRC))
     {
       safe_fclose (&fp);
+#ifdef HAVE_FMEMOPEN
+      if(tempsize)
+          FREE (&temp);
+#else
       unlink (tempfile);
+#endif
     }
   }
 

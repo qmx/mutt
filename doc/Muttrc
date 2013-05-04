@@ -657,6 +657,26 @@ attachments   -I message/external-body
 # $crypt_autosign, $crypt_replysign and $smime_is_default.
 # 
 # 
+# set sidebar_visible=no
+#
+# Name: sidebar_visible
+# Type: boolean
+# Default: no
+# 
+# 
+# This specifies whether or not to show sidebar (left-side list of folders).
+# 
+# 
+# set sidebar_width=0
+#
+# Name: sidebar_width
+# Type: number
+# Default: 0
+# 
+# 
+# The width of the sidebar.
+# 
+# 
 # set crypt_autosign=no
 #
 # Name: crypt_autosign

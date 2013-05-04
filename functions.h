@@ -169,6 +169,11 @@ struct binding_t OpMain[] = { /* map: index */
   { "decrypt-save",		OP_DECRYPT_SAVE,		NULL },
 
 
+ { "sidebar-scroll-up",	OP_SIDEBAR_SCROLL_UP, NULL },
+ { "sidebar-scroll-down",	OP_SIDEBAR_SCROLL_DOWN, NULL },
+ { "sidebar-next",		OP_SIDEBAR_NEXT, NULL },
+ { "sidebar-prev",		OP_SIDEBAR_PREV, NULL },
+ { "sidebar-open",		OP_SIDEBAR_OPEN, NULL },
   { NULL,			0,				NULL }
 };
 
@@ -272,6 +277,11 @@ struct binding_t OpPager[] = { /* map: pager */
 
   { "what-key",		OP_WHAT_KEY,		NULL },
 
+  { "sidebar-scroll-up",	OP_SIDEBAR_SCROLL_UP, NULL },
+  { "sidebar-scroll-down",	OP_SIDEBAR_SCROLL_DOWN, NULL },
+  { "sidebar-next",	OP_SIDEBAR_NEXT, NULL },
+  { "sidebar-prev",	OP_SIDEBAR_PREV, NULL },
+  { "sidebar-open", OP_SIDEBAR_OPEN, NULL },
   { NULL,		0,				NULL }
 };
 

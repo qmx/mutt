@@ -1953,6 +1953,54 @@ struct option_t MuttVars[] = {
   ** not used.
   ** (PGP only)
   */
+  {"sidebar_delim", DT_STR, R_BOTH, UL &SidebarDelim, UL "|"},
+  /*
+  ** .pp
+  ** This specifies the delimiter between the sidebar (if visible) and 
+  ** other screens.
+  */
+  {"sidebar_indentstr", DT_STR, R_BOTH, UL &SidebarIndentStr, UL " "},
+  /*
+  ** .pp
+  ** This specifies the string that is used to indent items
+  ** with sidebar_folderindent= yes
+  */
+  { "sidebar_visible", DT_BOOL, R_BOTH, OPTSIDEBAR, 0 },
+  /*
+  ** .pp
+  ** This specifies whether or not to show sidebar (left-side list of folders).
+  */
+  { "sidebar_sort", DT_BOOL, R_BOTH, OPTSIDEBARSORT, 0 },
+  /*
+  ** .pp
+  ** This specifies whether or not to sort the sidebar alphabetically.
+  */
+  { "sidebar_width", DT_NUM, R_BOTH, UL &SidebarWidth, 0 },
+  /*
+  ** .pp
+  ** The width of the sidebar.
+  */
+  { "sidebar_shortpath", DT_BOOL, R_BOTH, OPTSIDEBARSHORTPATH, 0 },
+  /*
+  ** .pp
+  ** Should the sidebar shorten the path showed.
+  */
+  {"sidebar_format", DT_STR, R_NONE, UL &SidebarFormat, UL "%B%?F? [%F]?%* %?N?%N/?%4S"},
+  /*
+  ** .pp
+  ** Format string for the sidebar. The sequences `%N', `%F' and `%S'
+  ** will be replaced by the number of new or flagged messages or the total
+  ** size of them mailbox. `%B' will be replaced with the name of the mailbox.
+  ** The `%!' sequence will be expanded to `!' if there is one flagged message;
+  ** to `!!' if there are two flagged messages; and to `n!' for n flagged
+  ** messages, n>2.
+  */
+  { "sidebar_folderindent", DT_BOOL, R_BOTH, OPTSIDEBARFOLDERINDENT, 0 },
+  /*
+  ** .pp
+  ** Should folders be indented in the sidebar.
+  */
+
   { "pgp_use_gpg_agent", DT_BOOL, R_NONE, OPTUSEGPGAGENT, 0},
   /*
   ** .pp
